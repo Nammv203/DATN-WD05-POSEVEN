@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::get('dashboard', [AdminController::class, 'index']);
+        
+
+        Route::prefix('product')
+            ->as('product.')
+            ->group(function () {
+                Route::get('/', [ProductController::class, 'index'])->name('index');
+                Route::get('/create', [ProductController::class, 'create'])->name('create');
+                Route::get('/update', [ProductController::class, 'update'])->name('update');
+      
+            });
+    });
